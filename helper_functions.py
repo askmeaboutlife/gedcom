@@ -130,16 +130,16 @@ def birthBeforePMarriage(family, individual):
     for row in individual:
         f_id = row[8]
         name = row[1]
-		born = parser.parse(row[3])
-            for rowf in family:
-                if rowf[0] == f_id:
-                    marr = parser.parse(rowr[4])
-                    if (born < marr):
-                        continue
-                    else:
-                        arr.append("Error: " + name + " was born after their parents' marriage.")
-                else:
+        born = parser.parse(row[3])
+        for rowf in family:
+            if rowf[0] == f_id:
+                marr = parser.parse(rowr[4])
+                if (born < marr):
                     continue
+                else:
+                    arr.append("Error: " + name + " was born after their parents' marriage.")
+            else:
+                continue
     return arr
 	
 def birthBeforePDeath(family, individual):
@@ -147,7 +147,7 @@ def birthBeforePDeath(family, individual):
     for row in individual:
         f_id = row[8]
         name = row[1]
-		born = parser.parse(row[3])
+        born = parser.parse(row[3])
         if row[6] != "NA":
             death = parser.parse(row[6])
             for rowf in family:
