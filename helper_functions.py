@@ -133,7 +133,7 @@ def birthBeforePMarriage(family, individual):
         born = parser.parse(row[3])
         for rowf in family:
             if rowf[0] == f_id:
-                marr = parser.parse(rowr[4])
+                marr = parser.parse(rowf[4])
                 if (born < marr):
                     continue
                 else:
