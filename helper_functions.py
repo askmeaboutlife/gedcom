@@ -3,6 +3,7 @@ from dateutil import parser
 # insert all functions made during sprints here
 # import this with project3 code to test functions
 
+# start sprint 1
 
 def marrBeforeDiv(family, individual):
     arr = []
@@ -159,6 +160,29 @@ def birthBeforePDeath(family, individual):
                 else:
                     continue
     return arr
+
+
+# start sprint 2
+
+def listDeceased(individual):
+    deceased = []
+    for row in individual:
+        if row[6] != "NA":
+            deceased.append(row[1])
+    return deceased
+
+
+def listLivingSingle(individual, family):
+    single = []
+    bool = False
+    for row in individual:
+        if row[4] >= 30 and row[5] == True:
+            for r in family:
+                if r[4] == row[1] or r[6] == row[1]:
+                    bool = True
+            if bool == False:
+                single.append(row[1])
+    return single
 
 '''
 i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
