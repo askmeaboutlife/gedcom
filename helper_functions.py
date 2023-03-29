@@ -184,6 +184,32 @@ def listLivingSingle(individual, family):
                 single.append(row[1])
     return single
 
+
+def marriageAfter14(individual, family):
+    arr = []
+    bool = False
+    for row in individual:
+        if row[4] >= 14:
+            for r in family:
+                if r[1] != "NA":
+                    bool = True
+            if bool == False:
+                arr.append(row[1])
+    return arr
+
+def siblingsShouldNotMarry(individual, family):
+    siblings = []
+    for row in individual:
+        if row[2] == "F":
+            siblings.append(row[2])
+    if len(siblings) < 2:
+        return False
+    for i, sibling1 in enumerate(siblings):
+        for sibling2 in siblings[i+1:]:
+            if sibling1.fams and sibling1.fams.intersection(sibling2.fams):
+                return True
+    return False
+
 '''
 i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
 ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
