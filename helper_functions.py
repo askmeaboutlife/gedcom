@@ -184,6 +184,35 @@ def listLivingSingle(individual, family):
                 single.append(row[1])
     return single
 
+
+def uniqueID(individual, family):
+    arr = []
+    ids = []
+    names = []
+    for row_i in individual:
+        name = row_i[1]
+        p_id = row_i[0]
+        if p_id not in ids:
+            ids.append(p_id)
+            names.append(name)
+        else:
+            index = ids.index(p_id)
+            second_name = names[index]
+            arr.append("ERROR: INDIVIDUAL: US22: ID: "+ p_id +": " + name + " and "+ second_name+ " have the same IDs")      
+    return arr
+
+'''
+def parentsNotTooOld(individual, family):
+    arr = []
+    for row_f in family:
+        children = row_f[7]
+        if children == "0":
+            continue
+        dad_id = row_f[3]
+        mom_id = row_f[5]
+
+    return arr
+    '''
 '''
 i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
 ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
@@ -193,7 +222,7 @@ i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', 
 ['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
 ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
 ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
-['@I9@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+['@I1@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
 ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
 
 f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
@@ -206,7 +235,7 @@ f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Za
 ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
 ['@F9@', '11 Nov 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
 ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
-result = birthBeforeDeath(f1, i1)
+result = uniqueID(i1, f1)
 print(result)
-
 '''
+
