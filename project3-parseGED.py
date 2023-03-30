@@ -158,7 +158,7 @@ with open(filename, "r") as file:
     # print individual data
     indvheaders = ['ID', 'NAME', 'GENDER', 'BIRTHDAY', 'AGE', 'ALIVE', 'DEATH', 'CHILD', 'SPOUSE']
     indtable = [indvheaders] + individual
-    # print(tabulate(individual, headers=indvheaders, tablefmt='fancy_grid'))
+    #print(tabulate(individual, headers=indvheaders, tablefmt='fancy_grid'))
 
     # print family data
     famheaders = ['ID', 'MARRIED', 'DIVORCED', 'HUSBAND ID', 'HUSBAND NAME', 'WIFE ID', 'WIFE NAME', 'CHILDREN']

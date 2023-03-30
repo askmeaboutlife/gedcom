@@ -201,18 +201,37 @@ def uniqueID(individual, family):
             arr.append("ERROR: INDIVIDUAL: US22: ID: "+ p_id +": " + name + " and "+ second_name+ " have the same IDs")      
     return arr
 
-'''
+
 def parentsNotTooOld(individual, family):
     arr = []
     for row_f in family:
         children = row_f[7]
-        if children == "0":
+        if children == "NA":
             continue
         dad_id = row_f[3]
         mom_id = row_f[5]
-
+        mom_age = 0
+        dad_age = 0
+        for row_i in individual:
+            if row_i[0] == mom_id:
+                mom_age = row_i[4]
+            elif row_i[0] == dad_id:
+                dad_age = row_i[4]
+        children_list = children.strip('][').split(', ')
+        children_ages = []
+        for child in children_list:
+            for row_ii in individual:
+                if row_ii[0] == child:
+                    children_ages.append(row_ii[4])
+        for i, child_age in enumerate(children_ages):
+            if (mom_age - child_age) > 60:
+                child_id = children_list[i]
+                arr.append("ERROR: FAMILY: US12: ID: "+ mom_id +": " + mom_id + "is too old to be a parent to"+ child_id)
+            if (dad_age - child_age) >80:
+                child_id = children_list[i]
+                arr.append("ERROR: FAMILY: US12: ID: "+ dad_id +": " + dad_id + "is too old to be a parent to"+ child_id)
     return arr
-    '''
+
 def marriageAfter14(individual, family):
     arr = []
     bool = False
@@ -228,7 +247,7 @@ def marriageAfter14(individual, family):
 def siblingsShouldNotMarry(individual, family):
     siblings = []
     for row in individual:
-        if row[2] == "F":
+        if row[2] == "F" or row[2] == "M":
             siblings.append(row[2])
     if len(siblings) < 2:
         return False
@@ -238,29 +257,28 @@ def siblingsShouldNotMarry(individual, family):
                 return True
     return False
 
-'''
-i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
+
+i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
 ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
 ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
-['@I4@', 'Mohammed Colaze', 'Male', '15 Jan 2004', 19, False, '05 Jan 2022', 'NA', '@F4@'],
-['@I5@', 'Larsa Pippen', 'Female', '01 Apr 1970', 52, True, 'NA', '@F4@', 'NA'],
-['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+['@I4@', 'Mohammed Colaze', 'Male', '15 Jan 1940', 83, False, '05 Jan 2022', 'NA', '@F4@'],
+['@I5@', 'Larsa Pippen', 'Female', '01 Apr 2000', 2, True, 'NA', '@F4@', 'NA'],
+['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2012', 10, True, '07 Jan 2020', '@F2@', '@F1'],
 ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
 ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
-['@I1@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
-['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+['@I9@', 'Female Brianson', 'Female', '27 Nov 1950', 72, True, 'NA', '@F5@', '@F4@'],
+['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F1@', '@F2@']]
 
 f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
 ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@10@', 'Habitat Correner', 'NA'],
-['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
-['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '@F2@'],
+['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', "[@I2@]"],
+['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '[@I5@, @I6@]'],
 ['@F5@', '29 Feb 1996', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
 ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
 ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
-['@F8@', '25 Dec 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
-['@F9@', '11 Nov 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
+['@F8@', '25 Dec 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '[@I3@]'],
 ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
-result = uniqueID(i1, f1)
+result = parentsNotTooOld(i1, f1)
 print(result)
-'''
+
 
