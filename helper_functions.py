@@ -257,6 +257,41 @@ def siblingsShouldNotMarry(individual, family):
                 return True
     return False
 
+def noBigamy(individual, family):
+	# verifies no bigamy
+	bigamy = False
+	spouses = []
+	for row in individual:
+		for fam in family:
+			if fam[3] == row[1] or fam[5] == row[1]
+				spouses.append(row[1])
+			if len(spouses) > 1:
+				for spouse in spouses:
+					for fam_2 in family:
+						if fam_2 != fam:
+							if spouse in fam_2:
+								bigamy = True
+		
+	if bigamy:
+		print("There are bigamy cases in this file.")
+	else:
+		print("There are no bigamy cases in this file.")
+	
+	
+
+
+def listLivingMarried(individual, family):
+	# listing living married individuals
+	living_married = []
+	bool = False
+	for row in individual:
+		if row[4] >= 30 and row[5] == True:
+			for r in family:
+				if r[4] == row[1] or r[6] == row[1]:
+					bool = True
+					living_married.append(row[1])
+	return living_married
+
 
 i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
 ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
