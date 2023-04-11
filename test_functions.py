@@ -488,7 +488,7 @@ class testGED(unittest.TestCase):
         result = helper_functions.parentsNotTooOld(i1, f1)
         self.assertEqual(result, ['ERROR: FAMILY: US12: ID: @I9@: @I9@is too old to be a parent to@I5@', 'ERROR: FAMILY: US12: ID: @I4@: @I4@is too old to be a parent to@I5@', 'ERROR: FAMILY: US12: ID: @I9@: @I9@is too old to be a parent to@I6@'])
         
-        def test_bigamy(self):
+    def test_bigamy(self):
         i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
         ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
         ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
@@ -537,6 +537,118 @@ class testGED(unittest.TestCase):
         ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
         result = helper_functions.listLivingMarried(i1, f1)      
         self.assertEqual(result, ['Zara Theobold Lindholm', 'William Smyffe', 'Female Brianson', 'Habitat Correner'])
+	
+
+    def test1_maleLastNames(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'M', '23 Dec 1985', 35, True, 'NA', '@F5@', '@F2@'],
+        ['@I11@', 'Zara Theobold Lindholm', 'F', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I12@', 'Female Brianson', 'M', '17 Nov 2002', 20, 'NA', '@F1@', 'NA']]  
+        f1 = [['@F1@', '18 Jan 1800', 'Guy Stephenson', '@I1@', 'Guy Stephenson', '@I11@', 'Zara Theobold Lindholm', ['@I12@']]]
+        result = helper_functions.maleLastNames(i1, f1)
+        self.assertEqual(result, ['Error: @I12@ does not have the same name as their father.'])
+
+    def test2_maleLastNames(self):
+        i2 = [['@I1@', 'Guy Stephenson', 'M', '23 Dec 1985', 35, True, 'NA', '@F5@', '@F2@'],
+        ['@I11@', 'Zara Theobold Lindholm', 'F', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@']]  
+        f2 = [['@F1@', '18 Jan 1800', 'Guy Stephenson', '@I1@', 'Guy Stephenson', '@I11@', 'Zara Theobold Lindholm', 'NA']]
+        result = helper_functions.maleLastNames(i2, f2)
+        self.assertEqual(result, [])
+
+    def test3_maleLastNames(self):
+        i3 = [['@I1@', 'Henry Colaze', 'M', '23 Dec 1985', 35, True, 'NA', '@F5@', '@F2@'],
+        ['@I11@', 'Princess Colaze', 'F', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I12@', 'Mohammed Colaze', 'M', '17 Nov 2002', 20, 'NA', '@F1@', 'NA'],
+        ['@I13@', 'Queezy Moonroof', 'F', '17 Nov 2002', 20, 'NA', '@F1@', 'NA']]  
+        f3 = [['@F1@', '18 Jan 1800', 'Henry Colaze', '@I1@', 'Henry Colaze', '@I11@', 'Princess Colaze', ['@I12@', '@I13@']]]
+        result = helper_functions.maleLastNames(i3, f3)
+        self.assertEqual(result, [])
+
+    def test4_maleLastNames(self):
+        i4 = [['@I1@', 'Henry Colaze', 'M', '23 Dec 1985', 35, True, 'NA', '@F5@', '@F2@'],
+        ['@I11@', 'Princess Colaze', 'F', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I12@', 'Easter Saturday', 'M', '17 Nov 2002', 20, 'NA', '@F1@', 'NA'],
+        ['@I13@', 'Freedom March', 'M', '17 Nov 2002', 20, 'NA', '@F1@', 'NA']]  
+        f4 = [['@F1@', '18 Jan 1800', 'Henry Colaze', '@I1@', 'Henry Colaze', '@I11@', 'Princess Colaze', ['@I12@', '@I13@']]]
+        result = helper_functions.maleLastNames(i4, f4)
+        self.assertEqual(result, ['Error: @I12@ does not have the same name as their father.', 'Error: @I13@ does not have the same name as their father.'])
+
+	
+    def test1_listOrphans(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Male', '23 Dec 1985', 36, True, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Henry Colaze', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Mohammed Colaze', 'Male', '17 Oct 1977', 44, False, '05 Jan 2022', 'NA', '@F4@'],
+        ['@I5@', 'Bryce Maximus Pippen', 'Male', '29 Apr 1998', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Larsa Pippen', 'Female', '12 Jul 2001', 22, True, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Female Brianson', 'Male', '27 Nov 1989', 32, False, '05 Jan 2022', '@F5@', '@F4@'],
+        ['@I10@', 'Habitat Correner', 'Female', '20 May 1995', 17, True, 'NA', 'NA', '@F4@']]
+
+        f1 = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Lawrence Laundormat', '@I12@', 'Habitat Correner', 'NA'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Harrison Hazmat III', '@I9@', 'Gilgamesh Gorbichev', '@F2'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.listOrphans(i1, f1)
+        self.assertEqual(result, ['Bryce Maximus Pippen', 'Habitat Correner'])
+
+    def test2_listOrphans(self):
+        i2 = [['@I1@', 'Guy Stephenson', 'Male', '23 Dec 1985', 36, True, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', 'NA'],
+        ['@I3@', 'Henry Colaze', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', 'NA'],
+        ['@I4@', 'Mohammed Colaze', 'Female', '17 Oct 1977', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Larsa Pippen', 'Male', '29 Apr 1998', 23, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Bryce Maximus Pippen', 'Female', '12 Jul 2001', 22, True, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', 'NA'],
+        ['@I9@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', 'NA', 'NA'],
+        ['@I10@', 'Habitat Correner', 'Female', '20 May 1995', 26, True, 'NA', 'NA', '@F2@']]
+
+        f2 = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Lawrence Laundormat', '@I12@', 'Habitat Correner', 'NA'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@F1@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I14@', 'Female Brianson', '@F2@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.listOrphans(i2, f2)
+        self.assertEqual(result, [])
+
+    def test3_listOrphans(self):
+        i3 = [['@I1@', 'Guy Stephenson', 'Male', '23 Dec 1985', 36, True, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Henry Colaze', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Mohammed Colaze', 'Male', '17 Oct 1977', 44, False, '05 Jan 2022', 'NA', '@F4@'],
+        ['@I5@', 'Bryce Maximus Pippen', 'Male', '29 Apr 1998', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Larsa Pippen', 'Female', '12 Jul 2001', 22, True, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Female Brianson', 'Male', '27 Nov 1989', 32, False, '05 Jan 2022', '@F5@', '@F4@'],
+        ['@I10@', 'Habitat Correner', 'Female', '20 May 1995', 17, True, 'NA', 'NA', '@F4@']]
+
+        f3 = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Lawrence Laundormat', '@I12@', 'Habitat Correner', 'NA'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Harrison Hazmat III', '@I9@', 'Gilgamesh Gorbichev', '@F2'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.listOrphans(i3, f3)
+        self.assertEqual(result, ['Bryce Maximus Pippen', 'Habitat Correner'])
+
+
 
 if __name__ == '__main__':
     unittest.main()
