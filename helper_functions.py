@@ -293,6 +293,53 @@ def listLivingMarried(individual, family):
 	return living_married
 
 
+def maleLastNames(individual, family):
+    result = []
+    for i in family:
+        dad = i[4]
+        dad = dad.split(" ")[1]
+        if i[7] == 'NA':
+            pass
+        else:
+            children = i[7]
+            for child in children:
+                for i in individual:
+                    if i[0] == child and i[2] == 'M':
+                        child = i[1].split(" ")[1]
+                        if (child != dad):
+                            result.append("Error: " + i[0] + " does not have the same name as their father.")
+                    else:
+                        pass
+    return result
+
+
+def listOrphans(individual, family):
+    orphans = []
+    dad = 0
+    mom = 0
+    m_dead = False
+    d_dead = False
+    for row in individual:
+        if row[4] < 18:
+            f_id = str(row[7])
+            for r in family:
+                if f_id == r[0]:
+                    dad = r[3]
+                    mom = r[5]
+                    d_dead = False
+                    m_dead = False
+            for r in individual:
+                if r[0] == dad:
+                    if r[5] == False:
+                        d_dead = True
+                elif r[0] == mom:
+                    if r[5] == False:
+                        m_dead = True
+            if m_dead == True and d_dead == True:
+                orphans.append(row[1]);
+    return orphans
+
+
 i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
 ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
 ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
