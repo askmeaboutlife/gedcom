@@ -354,10 +354,26 @@ def correctGender(individual, family):
                 result.append("Error: Individual " +individualID+ " is wife in family "+familyID+" but has gender: "+individualGender)
     return result
 
+def uniqueNameBirthday(individual, family):
+    result=[]
+    counter = 0
+    for irow in individual:
+        thisID = irow[0]
+        thisName = irow[1]
+        thisBirthday = irow[3]
+        counter=counter+1
+        for iirow in individual[counter:]:
+            otherID = iirow[0]
+            otherName = iirow[1]
+            otherBirthday = iirow[3]
+            if thisName == otherName and thisBirthday == otherBirthday:
+                result.append("ERROR: Individuals with IDs: ("+thisID+","+otherID+") have the same name: "+thisName+" and birthday: "+thisBirthday)    
+    return result
+
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
             ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
             ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
-            ['@I4@', 'Mohammed Colaze', 'Male', '15 Jan 1940', 83, False, '05 Jan 2022', 'NA', '@F4@'],
+            ['@I4@', 'Zara Theobold Lindholm', 'Male', '14 Feb 1972', 83, False, '05 Jan 2022', 'NA', '@F4@'],
             ['@I5@', 'Larsa Pippen', 'Female', '01 Apr 2000', 2, True, 'NA', '@F4@', 'NA'],
             ['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2012', 10, True, '07 Jan 2020', '@F2@', '@F1'],
             ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
@@ -374,7 +390,7 @@ f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Za
             ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
             ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I18@', 'Jurgo McRich', '@I8@', 'Anna-Zon LeSplore', '[@I3@]'],
             ['@F10@', '30 Oct 2010', 'NA', '@I21@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
-result = correctGender(i1, f1)
+result = uniqueNameBirthday(i1, f1)
 print(result)
 
 
