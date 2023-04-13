@@ -354,6 +354,31 @@ def correctGender(individual, family):
                 result.append("Error: Individual " +individualID+ " is wife in family "+familyID+" but has gender: "+individualGender)
     return result
 
+def lessthan15Siblings(individual, family):
+	siblings = []
+    for row in individual:
+		if row[2] == "F" or row[2] == "M"
+			siblings.append(row[2])
+	if len(siblings) >= 15:
+		return False
+	return True
+
+	
+def noMarriageDescendants(individual, family):
+
+	dad_id = 0
+	mom_id = 0
+	for row in individual:
+		f_id = str(row[7])
+		for r in family:
+			if f_id == r[0]:
+				dad_id = r[3]
+				mom_id = r[5]
+			if dad_id == r[7] or mom_id == r[7]:
+				return True
+				
+	return False
+
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
             ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
             ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
