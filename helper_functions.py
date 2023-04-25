@@ -1,4 +1,5 @@
 from dateutil import parser
+from datetime import *
 
 # insert all functions made during sprints here
 # import this with project3 code to test functions
@@ -378,6 +379,53 @@ def noMarriageDescendants(individual, family):
 				return True
 				
 	return False
+
+
+def individualAges(individuals):
+    count = 0
+    list = []
+    for ind in individuals:
+        if ind[4] > 0:
+            list.append('ENTRY FOUND: '+ind[0]+': '+ind[1]+
+                         ' is of age '+str(ind[4]))
+            count += 1
+    if count > 0:
+        return list
+    else:
+        list.append('ERROR: No records found')
+        return list
+    
+
+def datesBeforeCurrent(individual, family):
+    list = []
+    today = datetime.now()
+    for ind in individual:
+        ind_id = ind[0]
+        birth = parser.parse(ind[3])
+        if birth > today:
+            list.append('ERROR: '+ind_id+' was born after today')
+        if ind[6] == 'NA':
+            pass
+        else:
+            death = parser.parse(ind[6])
+            if death > today:
+                list.append('ERROR: '+ind_id+' has died after today')
+    for fam in family:
+        husband = fam[3]
+        wife = fam[5]
+        if fam[1] == 'NA':
+            pass
+        else:
+            marriage = parser.parse(fam[1])
+            if marriage > today:
+                list.append('ERROR: '+husband+' '+wife+' were married after today')
+        if fam[2] == 'NA':
+            pass
+        else:
+            divorce = parser.parse(fam[2])
+            if divorce > today:
+                list.append('ERROR: '+husband+' '+wife+' were divorced after today')
+    return list
 
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
             ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
