@@ -245,18 +245,29 @@ def marriageAfter14(individual, family):
                 arr.append(row[1])
     return arr
 
-def siblingsShouldNotMarry(individual, family):
-    siblings = []
-    for row in individual:
-        if row[2] == "F" or row[2] == "M":
-            siblings.append(row[2])
-    if len(siblings) < 2:
-        return False
-    for i, sibling1 in enumerate(siblings):
-        for sibling2 in siblings[i+1:]:
-            if sibling1.fams and sibling1.fams.intersection(sibling2.fams):
-                return True
-    return False
+def siblingsShouldNotMarry(family, individual):
+    arr = []
+    siblings = {}
+    for row_i in individual:
+        p_id = row_i[0]
+        siblings[p_id] = row_i[5] # Store siblings' IDs and names in a dictionary
+
+    for row_f in family:
+        fam_id = row_f[0]
+        husband_id = row_f[1]
+        wife_id = row_f[2]
+        children_ids = row_f[7]
+
+        if husband_id in siblings.keys():
+            for child_id in children_ids:
+                if child_id in siblings.keys() and siblings[child_id] == wife_id:
+                    arr.append("ERROR: FAMILY: US18: ID: " + fam_id + ": Sibling marriage between " + husband_id + " and " + child_id)
+        
+        if wife_id in siblings.keys():
+            for child_id in children_ids:
+                if child_id in siblings.keys() and siblings[child_id] == husband_id:
+                    arr.append("ERROR: FAMILY: US18: ID: " + fam_id + ": Sibling marriage between " + wife_id + " and " + child_id)
+    return arr
 
 def noBigamy(individual, family):
 	# verifies no bigamy
