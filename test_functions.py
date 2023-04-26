@@ -696,7 +696,7 @@ class testGED(unittest.TestCase):
         result = helper_functions.correctGender(i1, f1)      
         self.assertEqual(result, ['Error: Individual @I1@ is husband in family @F1@ but has gender: Female'])
 	
-	def test1_noMarriageDescendants(self):
+    def test1_noMarriageDescendants(self):
         i2 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
         ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
         ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 2022', '@F1@', '@F5@'],
@@ -744,7 +744,7 @@ class testGED(unittest.TestCase):
         result = helper_functions.noMarriageDescendants(i2, f2)
         self.assertEqual(result, False)
 	
-	def test1_lessThan15(self):
+    def test1_lessThan15(self):
         i2 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
         ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
         ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 2022', '@F1@', '@F5@'],
@@ -770,7 +770,7 @@ class testGED(unittest.TestCase):
         self.assertEqual(result, False)
 
 	
-	def test1_individualAges(self):
+    def test1_individualAges(self):
         i1 = [['@I1@', 'Henry Colaze', 'M', '23 Dec 1985', 35, True, 'NA', '@F5@', '@F2@'],
         ['@I11@', 'Princess Colaze', 'F', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
         ['@I12@', 'Mohammed Colaze', 'M', '17 Nov 2002', 20, 'NA', '@F1@', 'NA'],
