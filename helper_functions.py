@@ -235,14 +235,22 @@ def parentsNotTooOld(individual, family):
 
 def marriageAfter14(individual, family):
     arr = []
-    bool = False
-    for row in individual:
-        if row[4] >= 14:
-            for r in family:
-                if r[1] != "NA":
-                    bool = True
-            if bool == False:
-                arr.append(row[1])
+    for row_f in family:
+        fam_id = row_f[0]
+        husband_id = row_f[3]
+        wife_id = row_f[5]
+        marr = parser.parse(row_f[1])
+        for row_i in individual:
+            if row_i[0] == husband_id:
+                husband_age = row_i[4]
+                husband_name = row_i[1]
+            elif row_i[0] == wife_id:
+                wife_age = row_i[4]
+                wife_name = row_i[1]
+        if husband_age - marr < 14:
+            arr.append("ERROR: FAMILY: US10: ID: " + fam_id + ": " + husband_name + " was married before 14")
+        if wife_age - marr < 14:
+            arr.append("ERROR: FAMILY: US10: ID: " + fam_id + ": " + wife_name + " was married before 14")
     return arr
 
 def siblingsShouldNotMarry(family, individual):
