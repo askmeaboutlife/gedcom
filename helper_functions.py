@@ -446,6 +446,57 @@ def datesBeforeCurrent(individual, family):
                 list.append('ERROR: '+husband+' '+wife+' were divorced after today')
     return list
 
+def auntsAndUncles(family, individual):
+    arr = []
+    children = {}
+    for row_f in family:
+        fam_id = row_f[0]
+        husband_id = row_f[3]
+        wife_id = row_f[5]
+        children_ids = row_f[7]
+        for child_id in children_ids:
+            children[child_id] = fam_id # Store children's IDs and family IDs in a dictionary
+
+    for row_i in individual:
+        p_id = row_i[0]
+        name = row_i[1]
+        sex = row_i[2]
+        fam_id = row_i[7]
+        if (sex == 'F' or sex == 'M') and p_id in children.keys():
+            for row_f in family:
+                if row_f[0] == fam_id:
+                    husband_id = row_f[3]
+                    wife_id = row_f[5]
+                    if husband_id == p_id:
+                        for child_id in row_f[7]:
+                            if child_id != p_id and row_i[6] == individual[child_id][2]:
+                                arr.append("ERROR: INDIVIDUAL: US20: ID: " + p_id + ": Aunt " + name + " is married to her nephew " + individual[child_id][2] + " in family " + children[child_id])
+                    else:
+                        for child_id in row_f[7]:
+                            if child_id != p_id and row_i[4] == individual[child_id][3]:
+                                arr.append("ERROR: INDIVIDUAL: US20: ID: " + p_id + ": Uncle " + name + " is married to his niece " + individual[child_id][3] + " in family " + children[child_id])
+    return arr
+
+def orderSiblingsByAge(family, individual):
+    siblings = {}
+    for row_i in individual:
+        p_id = row_i[0]
+        siblings[p_id] = {'name': row_i[1], 'birthdate': parser.parse(row_i[3]), 'family': row_i[7]} # Store siblings' IDs, names, birthdates, and family IDs in a dictionary
+
+    for row_f in family:
+        children_ids = row_f[7]
+        if children_ids != "NA":
+            children_birthdates = []
+            for child_id in children_ids:
+                if child_id in siblings.keys():
+                    children_birthdates.append(siblings[child_id]['birthdate'])
+            children_birthdates.sort()
+            print("Family ID:", row_f[0])
+            for birthdate in children_birthdates:
+                for sibling_id, sibling_info in siblings.items():
+                    if sibling_info['family'] == row_f[0] and sibling_info['birthdate'] == birthdate:
+                        print("Sibling ID:", sibling_id, "Name:", sibling_info['name'], "Birthdate:", sibling_info['birthdate'])
+
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
             ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
             ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
