@@ -1,4 +1,5 @@
 from dateutil import parser
+from datetime import *
 
 # insert all functions made during sprints here
 # import this with project3 code to test functions
@@ -234,28 +235,47 @@ def parentsNotTooOld(individual, family):
 
 def marriageAfter14(individual, family):
     arr = []
-    bool = False
-    for row in individual:
-        if row[4] >= 14:
-            for r in family:
-                if r[1] != "NA":
-                    bool = True
-            if bool == False:
-                arr.append(row[1])
+    for row_f in family:
+        fam_id = row_f[0]
+        husband_id = row_f[3]
+        wife_id = row_f[5]
+        marr = parser.parse(row_f[1])
+        for row_i in individual:
+            if row_i[0] == husband_id:
+                husband_age = row_i[4]
+                husband_name = row_i[1]
+            elif row_i[0] == wife_id:
+                wife_age = row_i[4]
+                wife_name = row_i[1]
+        if husband_age - marr < 14:
+            arr.append("ERROR: FAMILY: US10: ID: " + fam_id + ": " + husband_name + " was married before 14")
+        if wife_age - marr < 14:
+            arr.append("ERROR: FAMILY: US10: ID: " + fam_id + ": " + wife_name + " was married before 14")
     return arr
 
-def siblingsShouldNotMarry(individual, family):
-    siblings = []
-    for row in individual:
-        if row[2] == "F" or row[2] == "M":
-            siblings.append(row[2])
-    if len(siblings) < 2:
-        return False
-    for i, sibling1 in enumerate(siblings):
-        for sibling2 in siblings[i+1:]:
-            if sibling1.fams and sibling1.fams.intersection(sibling2.fams):
-                return True
-    return False
+def siblingsShouldNotMarry(family, individual):
+    arr = []
+    siblings = {}
+    for row_i in individual:
+        p_id = row_i[0]
+        siblings[p_id] = row_i[5] # Store siblings' IDs and names in a dictionary
+
+    for row_f in family:
+        fam_id = row_f[0]
+        husband_id = row_f[1]
+        wife_id = row_f[2]
+        children_ids = row_f[7]
+
+        if husband_id in siblings.keys():
+            for child_id in children_ids:
+                if child_id in siblings.keys() and siblings[child_id] == wife_id:
+                    arr.append("ERROR: FAMILY: US18: ID: " + fam_id + ": Sibling marriage between " + husband_id + " and " + child_id)
+        
+        if wife_id in siblings.keys():
+            for child_id in children_ids:
+                if child_id in siblings.keys() and siblings[child_id] == husband_id:
+                    arr.append("ERROR: FAMILY: US18: ID: " + fam_id + ": Sibling marriage between " + wife_id + " and " + child_id)
+    return arr
 
 def noBigamy(individual, family):
 	# verifies no bigamy
@@ -369,6 +389,77 @@ def uniqueNameBirthday(individual, family):
             if thisName == otherName and thisBirthday == otherBirthday:
                 result.append("ERROR: Individuals with IDs: ("+thisID+","+otherID+") have the same name: "+thisName+" and birthday: "+thisBirthday)    
     return result
+def lessthan15Siblings(individual, family):
+    siblings = []
+    for row in individual:
+        if row[2] == "F" or row[2] == "M":
+            siblings.append(row[2])
+    if len(siblings) >= 15:
+        return False
+    return True
+
+	
+def noMarriageDescendants(individual, family):
+
+	dad_id = 0
+	mom_id = 0
+	for row in individual:
+		f_id = str(row[7])
+		for r in family:
+			if f_id == r[0]:
+				dad_id = r[3]
+				mom_id = r[5]
+			if dad_id == r[7] or mom_id == r[7]:
+				return True
+				
+	return False
+
+
+def individualAges(individuals):
+    count = 0
+    list = []
+    for ind in individuals:
+        if ind[4] > 0:
+            list.append('ENTRY FOUND: '+ind[0]+': '+ind[1]+
+                         ' is of age '+str(ind[4]))
+            count += 1
+    if count > 0:
+        return list
+    else:
+        list.append('ERROR: No records found')
+        return list
+    
+
+def datesBeforeCurrent(individual, family):
+    list = []
+    today = datetime.now()
+    for ind in individual:
+        ind_id = ind[0]
+        birth = parser.parse(ind[3])
+        if birth > today:
+            list.append('ERROR: '+ind_id+' was born after today')
+        if ind[6] == 'NA':
+            pass
+        else:
+            death = parser.parse(ind[6])
+            if death > today:
+                list.append('ERROR: '+ind_id+' has died after today')
+    for fam in family:
+        husband = fam[3]
+        wife = fam[5]
+        if fam[1] == 'NA':
+            pass
+        else:
+            marriage = parser.parse(fam[1])
+            if marriage > today:
+                list.append('ERROR: '+husband+' '+wife+' were married after today')
+        if fam[2] == 'NA':
+            pass
+        else:
+            divorce = parser.parse(fam[2])
+            if divorce > today:
+                list.append('ERROR: '+husband+' '+wife+' were divorced after today')
+    return list
 
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
             ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
