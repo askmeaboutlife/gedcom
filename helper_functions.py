@@ -497,6 +497,30 @@ def orderSiblingsByAge(family, individual):
                     if sibling_info['family'] == row_f[0] and sibling_info['birthdate'] == birthdate:
                         print("Sibling ID:", sibling_id, "Name:", sibling_info['name'], "Birthdate:", sibling_info['birthdate'])
 
+
+def multipleBirths(individual, family):
+	birthdays = []
+	for ind in family:
+		ind_id = ind[0]
+		birth = parser.parse(ind[3])
+		birthdays.append[ind]
+	if birthdays.len > 5
+		return True
+	return False
+
+	
+def uniqueFamilies(individual, family):
+
+	for row in individual:
+		f_id = str(row[7])
+		for r in family:
+			if f_id == r[0]:
+				dad_id = r[3]
+				mom_id = r[5]
+			if dad_id == r[7] or mom_id == r[7]:
+				return False		
+	return True
+			
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
             ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
             ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
