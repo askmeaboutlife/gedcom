@@ -568,6 +568,42 @@ def multipleBirths(individual, family):
 		return True
 	return False
 
+def multipleBirths(individual, family):
+	birthdays = []
+	for ind in family:
+		ind_id = ind[0]
+		birth = parser.parse(ind[3])
+		birthdays.append[ind]
+	if birthdays.len > 5
+		return True
+	return False
+
+	
+def firstCousins(family, individual):
+
+	arr = []
+    cousins = {}
+    for row_i in individual:
+        p_id = row_i[0]
+        cousins[p_id] = row_i[5] # Store cousins' IDs and names in a dictionary
+
+    for row_f in family:
+        fam_id = row_f[0]
+        husband_id = row_f[1]
+        wife_id = row_f[2]
+        children_ids = row_f[7]
+
+        if husband_id in cousins.keys():
+            for child_id in children_ids:
+                if child_id in cousins.keys() and cousins[child_id] == wife_id:
+                    arr.append("ERROR: FAMILY: US19: ID: " + fam_id + ": First cousin marriage between " + husband_id + " and " + child_id)
+        
+        if wife_id in cousins.keys():
+            for child_id in children_ids:
+                if child_id in cousins.keys() and cousins[child_id] == husband_id:
+                    arr.append("ERROR: FAMILY: US19: ID: " + fam_id + ": First cousin marriage between " + wife_id + " and " + child_id)
+    return arr
+
 	
 			
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
