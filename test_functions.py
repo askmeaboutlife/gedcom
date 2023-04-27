@@ -731,21 +731,10 @@ class testGED(unittest.TestCase):
             ['@F10@', '30 Oct 2010', 'NA', '@I21@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
         result = helper_functions.uniqueNameBirthday(i1, f1)      
         self.assertEqual(result, ['ERROR: Individuals with IDs: (@I2@,@I4@) have the same name: Zara Theobold Lindholm and birthday: 14 Feb 1972'])
-        f2 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
-        ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@10@', 'Habitat Correner', 'NA'],
-        ['@F3@', '07 Jun 2002', '08 Mar 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
-        ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '@F2@'],
-        ['@F5@', '29 Feb 1996', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
-        ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
-        ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
-        ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
-        ['@F9@', '11 Nov 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
-        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
-        result = helper_functions.noMarriageDescendants(i2, f2)
-        self.assertEqual(result, False)
+
 	
     def test1_lessThan15(self):
-        i2 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
+        i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
         ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
         ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 2022', '@F1@', '@F5@'],
         ['@I4@', 'Mohammed Colaze', 'Male', '15 Jan 2004', 19, False, '05 Jan 2022', 'NA', '@F4@'],
@@ -756,7 +745,7 @@ class testGED(unittest.TestCase):
         ['@I9@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
         ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
 
-        f2 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+        f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
         ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@10@', 'Habitat Correner', 'NA'],
         ['@F3@', '07 Jun 2002', '08 Mar 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
         ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '@F2@'],
@@ -870,6 +859,55 @@ class testGED(unittest.TestCase):
         ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
         result = helper_functions.datesBeforeCurrent(i3, f3)
         self.assertEqual(result, ['ERROR: @I7@ was born after today', 'ERROR: @I9@ @I19@ were married after today'])
+    
+    def test_uniqueFamilyBySpouse(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
+            ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
+            ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
+            ['@I4@', 'Zara Theobold Lindholm', 'Male', '14 Feb 1972', 83, False, '05 Jan 2022', 'NA', '@F4@'],
+            ['@I5@', 'Larsa Pippen', 'Female', '01 Apr 2000', 2, True, 'NA', '@F4@', 'NA'],
+            ['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2012', 10, True, '07 Jan 2020', '@F2@', '@F1'],
+            ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+            ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+            ['@I9@', 'Female Brianson', 'Female', '27 Nov 1950', 72, True, 'NA', '@F5@', '@F4@'],
+            ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F1@', '@F2@']]
+
+        f1 = [['@F1@', '07 Mar 2002', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+            ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@I10@', 'Habitat Correner', 'NA'],
+            ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Zara Theobold Lindholm', "[@I2@]"],
+            ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '[@I5@, @I6@]'],
+            ['@F5@', '29 Feb 1996', 'NA', '@I15@', 'Easter Saturday', '@I5@', 'Freedom March', 'NA'],
+            ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+            ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+            ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I18@', 'Jurgo McRich', '@I8@', 'Anna-Zon LeSplore', '[@I3@]'],
+            ['@F10@', '30 Oct 2010', 'NA', '@I21@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        
+        result = helper_functions.uniqueFamilyBySpouse(i1, f1)
+        self.assertEqual(result, ['ERROR: US24: Families @F1@ and @F3@ have the same spouse and marriage date'])
+
+    def test_uniqueFirstNamesInFamilies(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
+            ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
+            ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
+            ['@I4@', 'Zara Theobold Lindholm', 'Male', '14 Feb 1972', 83, False, '05 Jan 2022', 'NA', '@F4@'],
+            ['@I5@', 'Larsa Pippen', 'Female', '01 Apr 2000', 2, True, 'NA', '@F4@', 'NA'],
+            ['@I6@', 'Larsa Pippen', 'Male', '01 Apr 2000', 10, True, '07 Jan 2020', '@F2@', '@F1'],
+            ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+            ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+            ['@I9@', 'Female Brianson', 'Female', '27 Nov 1950', 72, True, 'NA', '@F5@', '@F4@'],
+            ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F1@', '@F2@']]
+
+        f1 = [['@F1@', '07 Mar 2002', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+            ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@I10@', 'Habitat Correner', 'NA'],
+            ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Zara Theobold Lindholm', "[@I2@]"],
+            ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '[@I5@, @I6@]'],
+            ['@F5@', '29 Feb 1996', 'NA', '@I15@', 'Easter Saturday', '@I5@', 'Freedom March', 'NA'],
+            ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+            ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+            ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I18@', 'Jurgo McRich', '@I8@', 'Anna-Zon LeSplore', '[@I3@]'],
+            ['@F10@', '30 Oct 2010', 'NA', '@I21@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.uniqueFirstNamesInFamilies(i1, f1)
+        self.assertEqual(result, ['ERROR: US25: family @F4@ has children with the same name and birthday: @I5@,@I6@'])
 
 if __name__ == '__main__':
     unittest.main()

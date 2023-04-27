@@ -389,7 +389,8 @@ def uniqueNameBirthday(individual, family):
             if thisName == otherName and thisBirthday == otherBirthday:
                 result.append("ERROR: Individuals with IDs: ("+thisID+","+otherID+") have the same name: "+thisName+" and birthday: "+thisBirthday)    
     return result
-def lessthan15Siblings(individual, family):
+
+def lessThan15Siblings(individual, family):
     siblings = []
     for row in individual:
         if row[2] == "F" or row[2] == "M":
@@ -461,27 +462,72 @@ def datesBeforeCurrent(individual, family):
                 list.append('ERROR: '+husband+' '+wife+' were divorced after today')
     return list
 
+def uniqueFamilyBySpouse(individual, family):
+    result=[]
+    counter = 0
+    for fam in family:
+        husbandName = fam[4]
+        wifeName = fam[6]
+        date = fam[1]
+        id = fam[0]
+        counter = counter+1
+        for ffam in family[counter:]:
+            otherHusbandName = ffam[4]
+            otherWifeName = ffam[6]
+            otherDate = ffam[1]
+            otherId = ffam[0]
+            if (husbandName == otherHusbandName or wifeName == otherWifeName) and date==otherDate:
+                result.append("ERROR: US24: Families "+id+ " and "+otherId+" have the same spouse and marriage date")
+    return result
+
+def uniqueFirstNamesInFamilies(individual, family):
+    result=[]
+    for fam in family:
+        famId = fam[0]
+        children = fam[7]
+        children_list = children.strip('][').split(', ')
+        counter = 0
+        for child in children_list:
+            for ind in individual:
+                if ind[0]==child:
+                    childName = ind[1]
+                    birthday = ind[3]
+                    id = ind[0]
+            counter=counter+1
+            if (counter<len(children_list)):
+                for otherChild in children_list[counter:]:
+                    for ind in individual:
+                        if ind[0] == otherChild:
+                            otherChildName = ind[1]
+                            otherBirthday = ind[3]
+                            otherId = ind[0]
+                    if childName == otherChildName and birthday == otherBirthday:
+                        result.append("ERROR: US25: family " +famId+ " has children with the same name and birthday: " +id+"," +otherId)
+    return result
+
+
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
             ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
             ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
             ['@I4@', 'Zara Theobold Lindholm', 'Male', '14 Feb 1972', 83, False, '05 Jan 2022', 'NA', '@F4@'],
             ['@I5@', 'Larsa Pippen', 'Female', '01 Apr 2000', 2, True, 'NA', '@F4@', 'NA'],
-            ['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2012', 10, True, '07 Jan 2020', '@F2@', '@F1'],
+            ['@I6@', 'Larsa Pippen', 'Male', '01 Apr 2000', 10, True, '07 Jan 2020', '@F2@', '@F1'],
             ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
             ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
             ['@I9@', 'Female Brianson', 'Female', '27 Nov 1950', 72, True, 'NA', '@F5@', '@F4@'],
             ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F1@', '@F2@']]
 
-f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+f1 = [['@F1@', '07 Mar 2002', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
             ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@I10@', 'Habitat Correner', 'NA'],
-            ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', "[@I2@]"],
+            ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Zara Theobold Lindholm', "[@I2@]"],
             ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '[@I5@, @I6@]'],
             ['@F5@', '29 Feb 1996', 'NA', '@I15@', 'Easter Saturday', '@I5@', 'Freedom March', 'NA'],
             ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
             ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
             ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I18@', 'Jurgo McRich', '@I8@', 'Anna-Zon LeSplore', '[@I3@]'],
             ['@F10@', '30 Oct 2010', 'NA', '@I21@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
-result = uniqueNameBirthday(i1, f1)
+result = uniqueFirstNamesInFamilies(i1, f1)
 print(result)
+#uniqueFirstNamesInFamilies(i1,f1)
 
 
