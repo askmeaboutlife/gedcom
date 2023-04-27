@@ -564,7 +564,7 @@ def multipleBirths(individual, family):
 		ind_id = ind[0]
 		birth = parser.parse(ind[3])
 		birthdays.append[ind]
-	if birthdays.len > 5
+	if birthdays.len > 5:
 		return True
 	return False
 
