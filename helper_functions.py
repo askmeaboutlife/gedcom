@@ -509,17 +509,6 @@ def multipleBirths(individual, family):
 	return False
 
 	
-def uniqueFamilies(individual, family):
-
-	for row in individual:
-		f_id = str(row[7])
-		for r in family:
-			if f_id == r[0]:
-				dad_id = r[3]
-				mom_id = r[5]
-			if dad_id == r[7] or mom_id == r[7]:
-				return False		
-	return True
 			
 i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
             ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
