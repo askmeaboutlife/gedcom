@@ -574,6 +574,18 @@ def listLivingPeopleWithUpcomingBirthdays(individuals):
     
     return result
 
+def validateDates(dates):
+    result = []
+    
+    for date in dates:
+        try:
+            datetime.strptime(date, "%Y-%m-%d")
+            result.append(date)
+        except ValueError:
+            result.append(f"ERROR: US42: {date} is not a legitimate date.")
+    
+    return result
+
 def multipleBirths(individual, family):
 	birthdays = []
 	for ind in family:
