@@ -558,15 +558,21 @@ def orderSiblingsByAge(family, individual):
                         print("Sibling ID:", sibling_id, "Name:", sibling_info['name'], "Birthdate:", sibling_info['birthdate'])
 
 
-def multipleBirths(individual, family):
-	birthdays = []
-	for ind in family:
-		ind_id = ind[0]
-		birth = parser.parse(ind[3])
-		birthdays.append[ind]
-	if birthdays.len > 5:
-		return True
-	return False
+def listLivingPeopleWithUpcomingBirthdays(individuals):
+    result = []
+    today = datetime.now().date()
+    thirty_days_from_now = today + timedelta(days=30)
+    
+    for individual in individuals:
+        id = individual[0]
+        name = individual[1]
+        birthday = datetime.strptime(individual[3], "%Y-%m-%d").date()
+        is_alive = individual[5] == "True"
+        
+        if birthday >= today and birthday <= thirty_days_from_now and is_alive:
+            result.append((name, birthday))
+    
+    return result
 
 def multipleBirths(individual, family):
 	birthdays = []
