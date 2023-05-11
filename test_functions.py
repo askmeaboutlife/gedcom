@@ -947,5 +947,155 @@ class testGED(unittest.TestCase):
         result = helper_functions.multipleBirths(i1, f1)
         self.assertEqual(result, False)
 	
+    def test1_marriageAfter14(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
+            ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
+            ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
+            ['@I4@', 'Zara Theobold Lindholm', 'Male', '14 Feb 1972', 83, False, '05 Jan 2022', 'NA', '@F4@'],
+            ['@I5@', 'Larsa Pippen', 'Female', '01 Apr 2000', 2, True, 'NA', '@F4@', 'NA'],
+            ['@I6@', 'Larsa Pippen', 'Male', '01 Apr 2000', 10, True, '07 Jan 2020', '@F2@', '@F@'],
+            ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+            ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+            ['@I9@', 'Female Brianson', 'Female', '27 Nov 1950', 72, True, 'NA', '@F5@', '@F4@'],
+            ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F1@', '@F2@']]
+
+        f1 = [['@F1@', '07 Mar 2002', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+            ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@I10@', 'Habitat Correner', 'NA'],
+            ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Zara Theobold Lindholm', "[@I2@]"],
+            ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '[@I5@, @I6@]'],
+            ['@F5@', '29 Feb 1996', 'NA', '@I15@', 'Easter Saturday', '@I5@', 'Freedom March', 'NA'],
+            ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+            ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+            ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I18@', 'Jurgo McRich', '@I8@', 'Anna-Zon LeSplore', '[@I3@]'],
+            ['@F10@', '30 Oct 2010', 'NA', '@I21@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.marriageAfter14(i1, f1)
+        self.assertEqual(result, ['ERROR: FAMILY: US10: ID: @F2@: Guy Stephenson was married before 14'])
+	
+    def test1_siblingsShouldNotMarry(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
+        ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Mohammed Colaze', 'Male', '15 Jan 2004', 19, False, '05 Jan 2022', 'NA', '@F4@'],
+        ['@I5@', 'Larsa Pippen', 'Female', '01 Apr 1970', 52, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F@'],
+        ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F8@', '@F8@'],
+        ['@I9@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', '@F8@', '@F8@'],
+        ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+        ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@I10@', 'Habitat Correner', 'NA'],
+        ['@F3@', '07 Jun 2002', '08 Mar 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
+        ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '@F2@'],
+        ['@F5@', '29 Feb 1996', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
+        ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+        ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+        ['@F8@', '25 Dec 1999', 'NA', '@I8@', 'Dawn O-Thyme', '@I9@', 'Female Brianson', 'NA'],
+        ['@F9@', '11 Nov 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.siblingsShouldNotMarry(i1, f1)
+        self.assertEqual(result, ['ERROR: FAMILY: US18: ID: @F8@: Sibling marriage between @I8@ and @I9@'])
+
+    def test1_auntsAndUncles(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Female', '31 Dec 1989', 23, True, 'NA', '@F1@', '@F2@'],
+            ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
+            ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
+            ['@I4@', 'Zara Theobold Lindholm', 'Male', '14 Feb 1972', 83, False, '05 Jan 2022', 'NA', '@F4@'],
+            ['@I5@', 'Larsa Pippen', 'Female', '01 Apr 2000', 2, True, 'NA', '@F4@', '@F2@'],
+            ['@I6@', 'Larsa Pippen', 'Male', '01 Apr 2000', 10, True, '07 Jan 2020', '@F2@', '@F@'],
+            ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+            ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+            ['@I9@', 'Female Brianson', 'Female', '27 Nov 1950', 72, True, 'NA', '@F1@', '@F4@'],
+            ['@I10@', 'Habitat Correner', 'Male', '06 Feb 1960', 60, True, 'NA', '@F1@', '@F2@']]
+
+        f1 = [['@F1@', '07 Mar 2002', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', 'NA'],
+            ['@F2@', '02 May 1990', 'NA', '@I5@', 'Larsa Pippen', '@I10@', 'Habitat Correner', 'NA'],
+            ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Zara Theobold Lindholm', "[@I2@]"],
+            ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '[@I5@, @I6@]'],
+            ['@F5@', '29 Feb 1996', 'NA', '@I15@', 'Easter Saturday', '@I5@', 'Freedom March', 'NA'],
+            ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+            ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+            ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I18@', 'Jurgo McRich', '@I8@', 'Anna-Zon LeSplore', '[@I3@]'],
+            ['@F10@', '30 Oct 2010', 'NA', '@I21@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.auntsAndUncles(i1, f1)
+        self.assertEqual(result, ['ERROR: INDIVIDUAL: US20: ID: @I10@: Uncle Habitat Correner is married to his niece Larsa Pippen in family @F2@'])
+
+    def test1_orderSiblingsByAge(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
+        ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
+        ['@I4@', 'Mohammed Colaze', 'Male', '15 Jan 2004', 19, False, '05 Jan 2022', 'NA', '@F4@'],
+        ['@I5@', 'Larsa Pippen', 'Female', '01 Apr 1970', 52, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'William Smyffe', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I1@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', '[@I1@, @I4@]'],
+        ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@10@', 'Habitat Correner', 'NA'],
+        ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
+        ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '@F2@'],
+        ['@F5@', '29 Feb 1996', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
+        ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+        ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+        ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
+        ['@F9@', '11 Nov 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.orderSiblingsByAge(i1, f1)
+        self.assertEqual(result, ['Family ID: @F1@: Sibling ID: @I4@: Name: Mohammed Colaze: Birthdate: 15 Jan 2004'])
+        self.assertEqual(result, ['Family ID: @F1@: Sibling ID: @I1@: Name: Bryce Maximus Pippen: Birthdate: 12 Jul 2001'])
+
+    def test1_listLivingPeopleWithUpcomingBirthdays(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
+        ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
+        ['@I4@', 'Mohammed Colaze', 'Male', '15 Jan 2004', 19, False, '05 Jan 2022', 'NA', '@F4@'],
+        ['@I5@', 'Larsa Pippen', 'Female', '20 May 1970', 52, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'William Smyffe', 'Male', '01 Jun 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I1@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', '[@I1@, @I4@]'],
+        ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@10@', 'Habitat Correner', 'NA'],
+        ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
+        ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '@F2@'],
+        ['@F5@', '29 Feb 1996', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
+        ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+        ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+        ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
+        ['@F9@', '11 Nov 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.listLivingPeopleWithUpcomingBirthdays(i1, f1)
+        self.assertEqual(result, ['Larsa Pippen 20 May 1970'])
+        self.assertEqual(result, ['William Smyffe 01 Jun 1990'])
+
+    def test1_validateDates(self):
+        i1 = [['@I1@', 'Guy Stephenson', 'Male', '31 Dec 1999', 23, True, 'NA', '@F5@', '@F2@'],
+        ['@I2@', 'Zara Theobold Lindholm', 'Female', '14 Feb 1972', 51, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Henry Colaze', 'Male', '09 Nov 1983', 39, False, '05 Jan 1982', '@F1@', '@F5@'],
+        ['@I4@', 'Mohammed Colaze', 'Male', '15 Jan 2004', 19, False, '05 Jan 2022', 'NA', '@F4@'],
+        ['@I5@', 'Larsa Pippen', 'Female', '20 May 1970', 52, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Bryce Maximus Pippen', 'Male', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'William Smyffe', 'Male', '01 Jun 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Dawn O-Thyme', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I1@', 'Female Brianson', 'Male', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Habitat Correner', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f1 = [['@F1@', '12 Sep 2070', 'NA', '@I1@', 'Bryce Maximus Pippen', '@I11@', 'Zara Theobold Lindholm', '[@I1@, @I4@]'],
+        ['@F2@', '02 May 1990', 'NA', '@I1@', 'Guy Stephenson', '@10@', 'Habitat Correner', 'NA'],
+        ['@F3@', '07 Mar 2002', '08 Jun 2002', '@I3@', 'Queezy Moonroof', '@I13@', 'Juicifruit Anime', '@I5@'],
+        ['@F4@', '25 Nov 2005', '12 Oct 2015', '@I4@', 'Mohammed Colaze', '@I9@', 'Female Brianson', '@F2@'],
+        ['@F5@', '30 Feb 1996', 'NA', '@I5@', 'Easter Saturday', '@I15@', 'Freedom March', 'NA'],
+        ['@F6@', '03 Jan 1997', 'NA', '@I6@', 'Saumit Okobachevsky', '@I16@', 'Jackie Dickinson', 'NA'],
+        ['@F7@', '19 Jun 2009', 'NA', '@I7@', 'Henry Pride', '@I17@', 'Samantha Sassafras', 'NA'],
+        ['@F8@', '25 Dec 1985', '21 Dec 2001', '@I8@', 'Jurgo McRich', '@I18@', 'Anna-Zon LeSplore', '@F3@'],
+        ['@F9@', '11 Nov 1976', '23 Nov 1999', '@I9@', 'Michael Stevens', '@I19@', 'Wacky Richardson', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Miguel Parkinson', '@I20@', 'Michelle Obama', 'NA']]
+        result = helper_functions.validateDates(i1, f1)
+        self.assertEqual(result, ['ERROR: US42: 30 Feb 1996 is not a legitimate date.'])	
+	
 if __name__ == '__main__':
     unittest.main()
